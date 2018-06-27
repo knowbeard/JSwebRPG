@@ -1,0 +1,43 @@
+@font-face {
+    font-family: 'exo2thin';
+    src: url('fonts/exo2thin.eot');
+    src: url('fonts/exo2thin.eot') format('embedded-opentype'),
+         url('fonts/exo2thin.woff2') format('woff2'),
+         url('fonts/exo2thin.woff') format('woff'),
+         url('fonts/exo2thin.ttf') format('truetype'),
+         url('fonts/exo2thin.svg#exo2thin') format('svg');
+}
+
+.battleButton {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+body {
+    background-color: lightgray
+}
+h1 {
+    color: darkblue;
+    text-align: centre;
+    font-family: exo2thin;
+    font-size: 10
+}
+
+h2 {
+    font-size: 6
+}
+
+h3 {
+    font-size: 5
+}
+
+p {
+    text-align: centre;
+    font-size: 5
+}
