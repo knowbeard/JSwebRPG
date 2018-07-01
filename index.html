@@ -6,61 +6,71 @@
         <body>
             <h1>WebRPG</h1>
             <h2>Log: <span id=log-message></span></h2>
-            <h3><p><span id="player-info"></span></p></h3>
             
-            <div id=non-battle>
-                <p>
-                    <button class = "battleButton"; onclick="battle()">Battle</button>
-                    <button class = "shopButton"; onclick="shop()">Shop</button>
-                </p>        
-            </div>
+            <div style="width: 100%; display: table">
+                <p>    
+                    <div style="display: table-row">
+                        <div style="display: table-cell">
+                            <span id="player-info"></span>
+                        </div>
+                        <div style="background-color:lightcoral; display: table-cell">
+                            <span id="enemy-info"></span>
+                        </div>
+                    </div>
+                    <div style="display: table-row">
+                        <div style="display: table-cell"; id=non-battle>
+                            <button class = "battleButton"; onclick="battle()">Battle</button>
+                            
+                        </div>
+                    </div>
+                    <div style="display: table-row"; id=battle-buttons>
+                        <div style="display: table-cell">
+                            <button class = "battleButton"; onclick="attack(Player, Enemy)">Attack</button>
+                            <button class = "battleButton"; onclick="heavy(Player, Enemy)">Heavy</button>
+                            <button class = "battleButton"; onclick="defend(Player)">Defend</button>
+                            <button class = "battleButton"; onclick="heal(Player)">Heal</button>
+                            <button class = "battleButton"; onclick="inBattle=false; refresh()">Escape</button>
+                        </div>
+                    </div>
 
-            <div id=battle-buttons>
-                <p>
-                    <button class = "battleButton"; onclick="attack(Player, Enemy)">Attack</button>
-                    <button class = "battleButton"; onclick="heavy(Player, Enemy)">Heavy</button>
-                    <button class = "battleButton"; onclick="defend(Player)">Defend</button>
-                    <button class = "battleButton"; onclick="heal(Player)">Heal</button>
-                    <button class = "battleButton"; onclick="inBattle=false; refresh()">Escape</button>
+                    <div style="display: table-row">
+                        <div style="display: table-cell; background-color:rgb(146, 207, 53)"; id=levelup-button>
+                            <button class = "levelUpButton"; onclick="levelUp(1)">Stamina</button>
+                            <button class = "levelUpButton"; onclick="levelUp(2)">Strength</button>
+                            <button class = "levelUpButton"; onclick="levelUp(3)">Spirit</button>
+                        </div>
+                    </div>
+
+                    <div style="display: table-row">
+                        <div style="display: table-cell">
+                            <div id=persistent-buttons>
+                                <button class = "itemButton"; onclick="showItems()">Items</button>
+                            </div>
+                            <div style="background-color:skyblue"; padding-left: 10%; id=item-menu>
+                                <button class = "itemButton"; onclick="Player.items[0].use(0); refresh()">Use</span></button><span id="item-name0"></span><br>
+                                <button class = "itemButton"; onclick="Player.items[1].use(1); refresh()">Use</span></button><span id="item-name1"></span><br>
+                                <button class = "itemButton"; onclick="Player.items[2].use(2); refresh()">Use</span></button><span id="item-name2"></span><br>
+                                <button class = "itemButton"; onclick="Player.items[3].use(3); refresh()">Use</span></button><span id="item-name3"></span><br>
+                                <button class = "itemButton"; onclick="Player.items[4].use(4); refresh()">Use</span></button><span id="item-name4"></span><br>
+                                <button class = "itemButton"; onclick="Player.items[5].use(5); refresh()">Use</span></button><span id="item-name5"></span><br>
+                                <button class = "itemButton"; onclick="Player.items[6].use(6); refresh()">Use</span></button><span id="item-name6"></span><br>
+                                <button class = "itemButton"; onclick="Player.items[7].use(7); refresh()">Use</span></button><span id="item-name7"></span><br>
+                                <button class = "itemButton"; onclick="Player.items[8].use(8); refresh()">Use</span></button><span id="item-name8"></span><br>
+                                <button class = "itemButton"; onclick="Player.items[9].use(9); refresh()">Use</span></button><span id="item-name9"></span><br>
+                            </div>
+                        </div>
+                        <div style="display: table-cell">
+                            <div id=non-battle>
+                                <button class = "shopButton"; onclick="shop()">Shop</button>
+                            </div>
+                            <div style="background-color:rgb(252, 185, 98)"; padding-left:10%; id=item-shop>
+                                <p><button class = "shopButton"; onclick="buy(0)">Buy</button><span id="shop-item0"></span></p>
+                                <p><button class = "shopButton"; onclick="buy(1)">Buy</button><span id="shop-item1"></span></p>
+                                <p><button class = "shopButton"; onclick="buy(2)">Buy</button><span id="shop-item2"></span></p>
+                            </div>
+                        </div>
+                    </div>
                 </p>
             </div>
-
-            <div id=persistent-buttons>
-                <button onclick="showItems()">Items</button>
-            </div>
-
-            <div style="background-color:skyblue"; padding-left: 10%; id=item-menu>
-                <p>
-                    <button class = "itemButton"; onclick="useItem(0)"><span id="item-button0"></span></button><span id="item-name0"></span><br>
-                    <button class = "itemButton"; onclick="useItem(1)"><span id="item-button1"></span></button><span id="item-name1"></span><br>
-                    <button class = "itemButton"; onclick="useItem(2)"><span id="item-button2"></span></button><span id="item-name2"></span><br>
-                    <button class = "itemButton"; onclick="useItem(3)"><span id="item-button3"></span></button><span id="item-name3"></span><br>
-                    <button class = "itemButton"; onclick="useItem(4)"><span id="item-button4"></span></button><span id="item-name4"></span><br>
-                    <button class = "itemButton"; onclick="useItem(5)"><span id="item-button5"></span></button><span id="item-name5"></span><br>
-                    <button class = "itemButton"; onclick="useItem(6)"><span id="item-button6"></span></button><span id="item-name6"></span><br>
-                    <button class = "itemButton"; onclick="useItem(7)"><span id="item-button7"></span></button><span id="item-name7"></span><br>
-                    <button class = "itemButton"; onclick="useItem(8)"><span id="item-button8"></span></button><span id="item-name8"></span><br>
-                    <button class = "itemButton"; onclick="useItem(9)"><span id="item-button9"></span></button><span id="item-name9"></span><br>
-                </p>
-            </div>
-
-            <div style="background-color:greenyellow"; padding-left:10%; id=levelup-button>
-                    <button class = "levelUpButton"; onclick="levelUp(1)">Stamina</button>
-                    <button class = "levelUpButton"; onclick="levelUp(2)">Strength</button>
-                    <button class = "levelUpButton"; onclick="levelUp(3)">Spirit</button>
-            </div>
-
-            <div style="background-color:lightcoral">
-                <p><span id="enemy-info"></span></p>
-
-            </div>
-
-            <div style="background-color:yellow"; padding-left:10%; id=item-shop>
-                <p>Shop</p>
-                <p><button onclick="buy(0)">Buy</button><span id="shop-item0"></span></p>
-                <p><button onclick="buy(1)">Buy</button><span id="shop-item1"></span></p>
-                <p><button onclick="buy(2)">Buy</button><span id="shop-item2"></span></p>
-            </div>
-
         </body>
         </html>

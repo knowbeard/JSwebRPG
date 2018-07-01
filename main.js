@@ -24,7 +24,8 @@ let Player = {
         hp:5,
         xp:0
     },
-    state: 2,
+    gold: 0,
+    state: "Defense",
     items:[],
     gear: {
         armour: false,
@@ -45,7 +46,7 @@ Enemy={
         hp:5,
         xp:0
     },
-    state:2,
+    state: "Defense",
     gear: {
         armour: false,
         weapon: false,
@@ -54,35 +55,83 @@ Enemy={
     }
 }
 
-function Item(name, type, cost, desc, stat, slot) {
+function Item(name, type, cost, desc, incr, slot, use) {
     this.name = name
     this.type = type
     this.cost = cost
     this.desc = desc
-    this.stat = stat
+    this.incr = incr
     this.slot = slot
+    this.use = use
 }
 
-let smallPotion = new Item("Small Potion", "Consumable", 5, "Recovers a little hp", .125, "h")
-let mediumPotion = new Item("Medium Potion", "Consumable", 10, "Recovers some hp", .25, "h")
-let largePotion = new Item("Large Potion", "Consumable", 20, "Recovers a lot of hp", .5, "h")
-let revivePotion = new Item("Revive Potion", "Consumable", 160, "Recovers all hp", 1, "h")
+let smallPotion = new Item("Small Potion", "Consumable", 5, "Recovers a little hp", .125, "h", function(i){ 
+    Player.stats.hp+= Player.stats.maxHp * this.incr
+    Player.items.splice(i, 1)
+})
+let mediumPotion = new Item("Medium Potion", "Consumable", 10, "Recovers some hp", .25, "h", function(i){
+    Player.stats.hp+= Player.stats.maxHp * this.incr
+    Player.items.splice(i, 1)
+})
+let largePotion = new Item("Large Potion", "Consumable", 20, "Recovers a lot of hp", .5, "h", function(i){
+    Player.stats.hp+= Player.stats.maxHp * this.incr
+    Player.items.splice(i, 1)
+})
+let revivePotion = new Item("Revive Potion", "Consumable", 160, "Recovers all hp", 1, "h", function(i){
+    Player.stats.hp+= Player.stats.maxHp * this.incr
+    Player.items.splice(i, 1)
+})
+let burntBook = new Item("Burnt Book", "Consumable", 10, "Could still be helpful", .125, "x", function(i){
+    Player.stats.xp+= Player.stats.level * 10 * this.incr
+    Player.items.splice(i, 1)
+})
+let rippedBook = new Item("Ripped Book", "Consumable", 20, "Some readable parts", .25, "x", function(i){
+    Player.stats.xp+= Player.stats.level * 10 * this.incr
+    Player.items.splice(i, 1)
+})
+let dustyBook = new Item("Dusty Book", "Consumable", 40, "Great source of knowledge", .5, "x", function(i){
+    Player.stats.xp+= Player.stats.level * 10 * this.incr
+    Player.items.splice(i, 1)
+})
+let ancientBook = new Item("Ancient Book", "Consumable", 160, "An ancient tome", 1, "x", function(i){
+    Player.stats.xp+= Player.stats.level * 10 * this.incr
+    Player.items.splice(i, 1)
+})
+let rustySword = new Item("Rusty Sword", "Gear", 0, "Not very sharp", 1, "w", function(i){
+    Player.gear.weapon = this
+    Player.items.splice(i, 1)
+})
+let ironSword = new Item("Iron Sword", "Gear", 50, "A good weight but fairly blunt", 1.1, "w", function(i){
+    Player.gear.weapon = this
+    Player.items.splice(i, 1)
+})
+let rustyArmour = new Item("Rusty Armour", "Gear", 0, "Seems a bit brittle", 1, "a", function(i){
+    Player.gear.armour = this
+    Player.items.splice(i, 1)
+})
+let ironArmour = new Item("Iron Armour", "Gear", 50, "Heavy but sturdy", 1.1, "a", function(i){
+    Player.gear.armour = this
+    Player.items.splice(i, 1)
+})
+let homelyRock = new Item("Homely Rock", "Gear", 0, "You brought it from your homeland", 1, "t", function(i){
+    Player.gear.trinket = this
+    Player.items.splice(i, 1)
+})
+let bronzeAmulet = new Item("Bronze Amulet", "Gear", 50, "You sense dull magic", 1.1, "t", function(i){
+    Player.gear.armour = this
+    Player.items.splice(i, 1)
+})
+let dullJade = new Item("Dull Jade", "Gear", 200, "Slightly increases vitality", 1.1, "g", function(i){
+    Player.gear.gem = this
+    Player.items.splice(i, 1)
+})
 
-let burntBook = new Item("Burnt Book", "Consumable", 10, "Could still be helpful", .125, "x")
-let rippedBook = new Item("Ripped Book", "Consumable", 20, "Some readable parts", .25, "x")
-let dustyBook = new Item("Dusty Book", "Consumable", 40, "Great source of knowledge", .5, "x")
-let ancientBook = new Item("Ancient Book", "Consumable", 160, "An ancient tome", 1, "x")
-
-let rustySword = new Item("Rusty Sword", "Gear", 0, "Not very sharp", 1, "w")
-let ironSword = new Item("Iron Sword", "Gear", 50, "A good weight but fairly blunt", 1.1, "w")
-
-let rustyArmour = new Item("Rusty Armour", "Gear", 0, "Seems a bit brittle", 1, "a")
-let ironArmour = new Item("Iron Armour", "Gear", 50, "Heavy but sturdy", 1.1, "a")
-
-let homelyRock = new Item("Homely Rock", "Gear", 0, "You brought it from your homeland", 1, "t")
-let bronzeAmulet = new Item("Bronze Amulet", "Gear", 50, "You sense dull magic", 1.1, "t")
-
-let dullJade = new Item("Dull Jade", "Gear", 200, "Slightly increases vitality", 1.1, "g")
+shopInventory = [smallPotion, mediumPotion, largePotion, revivePotion, 
+            burntBook, rippedBook, dustyBook, ancientBook, 
+            ironSword,
+            ironArmour,
+            bronzeAmulet,
+            dullJade]
 
 Player.gear.armour = rustyArmour
 Player.gear.weapon = rustySword
@@ -115,7 +164,7 @@ function enemyLevelUp(stat) {
 }
 
 
-function newEnemy() {
+function newEnemy(level) {
     Enemy = {
         stats: {
             level:1,
@@ -127,7 +176,7 @@ function newEnemy() {
             hp:5,
             xp:0
         },
-        state: 2,
+        state: "Defense",
         gear: {
             armour: rustyArmour,
             weapon: rustySword,
@@ -137,13 +186,13 @@ function newEnemy() {
     }
     let r = 0
     
-    for (l = 1, len = Player.stats.level, text = ""; l < len; l++) {
+    for (l = 1, len = level, text = ""; l < len; l++) {
         r = Math.floor((Math.random()*3)+1)
         enemyLevelUp(r)
     }
-    Enemy.stats.ap = Enemy.stats.strength+(Enemy.stats.spirit/2)
-    Enemy.stats.dp = Enemy.stats.stamina+(Enemy.stats.strength/2)
-    Enemy.stats.mp = Enemy.stats.spirit+(Enemy.stats.stamina/2)
+    Enemy.stats.attack = Enemy.stats.strength+(Enemy.stats.spirit/2)
+    Enemy.stats.defense = Enemy.stats.stamina+(Enemy.stats.strength/2)
+    Enemy.stats.will = Enemy.stats.spirit+(Enemy.stats.stamina/2)
 }
 
 function enemyTurn() {
@@ -168,8 +217,9 @@ function enemyTurn() {
 function win(person) {
     shopCooldown = 0
     if (person == Player) {
-        log = "You won and gained xp"
-        Player.stats.xp+=Enemy.stats.level*5
+        log = "You won"
+        Player.stats.xp+=Enemy.stats.level
+        Player.gold+=Enemy.stats.level
     }
     else if (person == Enemy) {
         log = "You lost"
@@ -183,12 +233,9 @@ function heal(target) {
         refresh()
         return
     }
-    target.stats.hp += target.stats.mp*4/3
-    if (target.stats.hp > target.stats.maxHp) {
-        target.stats.hp = target.stats.maxHp
-    }
+    target.stats.hp += target.stats.will*4/3
     turn++
-    target.state = 3
+    target.state = "Healing"
     refresh()
     if (turn % 2 == 0) {
         enemyTurn()
@@ -202,7 +249,7 @@ function defend(target) {
         return
     }
     turn++
-    target.state = 1
+    target.state = "Defense"
     refresh()
     if (turn % 2 == 0) {
         enemyTurn()
@@ -217,31 +264,29 @@ function attack(self, target) {
         return
     }
     let critChance = 50
-    if (target.state === 1) {
-        d = target.stats.dp * (Math.floor((Math.random() * (100+critChance) + critChance)))/100
+    if (target.state === "Defense") {
+        d = target.stats.defense * (Math.floor((Math.random() * (100+critChance) + critChance)))/100
         critChance/=2
     }
-    if (target.state === 2) {
+    if (target.state === "Attack") {
         critChance*=2
     }
-    if (target.state === 3) {
+    if (target.state === "Healing") {
         critchance = 50
     }
-    let a = self.stats.ap*(Math.floor((Math.random() * (100+critChance) + critChance)))/100
+    let a = self.stats.attack*(Math.floor((Math.random() * (100+critChance) + critChance)))/100
     a -= d 
     if (a < 0) {
         a = 0
     }
-    a = Math.trunc(a*10)/10
     target.stats.hp-=a
-    target.stats.hp = Math.trunc(target.stats.hp*10)/10
     if (target.stats.hp <= 0) {
         target.stats.hp = 0
         win(self)
         refresh()
         return
     }
-    self.state = 2
+    self.state = "Attack"
     turn++
     log = a + " damage"
     refresh()
@@ -257,31 +302,29 @@ function heavy(self, target) {
         return
     }
     let critChance = 50
-    if (target.state === 1) {
-        d = target.stats.dp * (Math.floor((Math.random() * (100+50) + 50)))/100
+    if (target.state === "Defense") {
+        d = target.stats.defense * (Math.floor((Math.random() * (100+50) + 50)))/100
         critChance*=2
     }
-    if (target.state === 2) {
+    if (target.state === "Attack") {
         critChance/=2
     }
-    if (target.state === 3) {
+    if (target.state === "Healing") {
         critchance = 50
     }
-    let a = self.stats.ap*(Math.floor((Math.random() * (100+critChance) + critChance)))/100
+    let a = self.stats.might*(Math.floor((Math.random() * (100+critChance) + critChance)))/100
     a -= d 
     if (a < 0) {
         a = 0
     }
-    a = Math.trunc(a*10)/10
     target.stats.hp-=a
-    target.stats.hp = Math.trunc(target.stats.hp*10)/10
     if (target.stats.hp <= 0) {
         target.stats.hp = 0
         win(self)
         refresh()
         return
     }
-    self.state = 2
+    self.state = "Attack"
     turn++
     log = a + " damage"
     refresh()
@@ -296,7 +339,8 @@ function battle() {
     inBattle = true
     inShop = false
     turn = 1
-    newEnemy()
+    
+    newEnemy(Math.floor(Math.random() * ((Player.stats.level*2) - (Player.stats.level*1.4))) + (Player.stats.level*1.4))
     refresh()
 }
 
@@ -331,17 +375,7 @@ function shop() {
     }   
     inShop=true
     for (i in shopItems) {
-        let r = Math.random()
-        if (r < .7) {
-            shopItems[i] = smallPotion
-        }
-        else if (r <.9) {
-            shopItems[i] = burntBook
-        }
-        else {
-            shopItems[i] = "Gear"
-        }
-
+        shopItems[i] = shopInventory[Math.floor(Math.random()*shopInventory.length)]
     }
     refresh()
     shopCooldown++
@@ -355,8 +389,18 @@ function buy(item) {
         refresh()
         return
     }
-    Player.items[Player.items.length] = shopItems[item]
-    refresh()
+    else {
+        if (Player.gold >= shopItems[item].cost) {
+            Player.items[Player.items.length] = shopItems[item]
+            Player.gold -= shopItems[item].cost
+            refresh()
+        }
+        else {
+            log = "Not enough gold"
+            refresh()
+            return
+        }
+    }
 }
 
 function showItems() {
@@ -366,36 +410,47 @@ function showItems() {
 
 }
 
-function useItem(item) {
-    alert("use item ", item)
-}
-
 function updateStats() {
 
-    Player.stats.ap = (Player.stats.strength+(Player.stats.spirit/2))*Player.gear.weapon.stat
-    Player.stats.dp = (Player.stats.stamina+(Player.stats.strength/2))*Player.gear.armour.stat
-    Player.stats.mp = (Player.stats.spirit+(Player.stats.stamina/2))*Player.gear.trinket.stat
+    Player.stats.hp = Math.trunc(Player.stats.hp*10)/10
+    Player.stats.xp = Math.trunc(Player.stats.xp*10)/10
+    Enemy.stats.hp = Math.trunc(Enemy.stats.hp*10)/10
 
-    Enemy.stats.ap = (Enemy.stats.strength+(Enemy.stats.spirit/2))*Enemy.gear.weapon.stat
-    Enemy.stats.dp = (Enemy.stats.stamina+(Enemy.stats.strength/2))*Enemy.gear.armour.stat
-    Enemy.stats.mp = (Enemy.stats.spirit+(Enemy.stats.stamina/2))*Enemy.gear.trinket.stat
+    if (Player.stats.hp > Player.stats.maxHp) {Player.stats.hp = Player.stats.maxHp}
+    if (Enemy.stats.hp > Enemy.stats.maxHp) {Enemy.stats.hp = Enemy.stats.maxHp}
+   
+    Player.stats.attack = (Player.stats.strength+(Player.stats.spirit/2))*Player.gear.weapon.incr
+    Player.stats.might = (Player.stats.strength+(Player.stats.stamina/2))*Player.gear.weapon.incr
+    Player.stats.defense = (Player.stats.stamina+(Player.stats.strength/2))*Player.gear.armour.incr
+    Player.stats.evasion = (Player.stats.stamina+(Player.stats.spirit/2))*Player.gear.armour.incr
+    Player.stats.will = (Player.stats.spirit+(Player.stats.stamina/2))*Player.gear.trinket.incr
+    Player.stats.power = (Player.stats.spirit+(Player.stats.strength/2))*Player.gear.trinket.incr
+
+    Enemy.stats.attack = (Enemy.stats.strength+(Enemy.stats.spirit/2))*Enemy.gear.weapon.incr
+    Enemy.stats.might = (Enemy.stats.strength+(Enemy.stats.stamina/2))*Enemy.gear.weapon.incr
+    Enemy.stats.defense = (Enemy.stats.stamina+(Enemy.stats.strength/2))*Enemy.gear.armour.incr
+    Enemy.stats.evasion = (Enemy.stats.stamina+(Enemy.stats.spirit/2))*Enemy.gear.armour.incr
+    Enemy.stats.will = (Enemy.stats.spirit+(Enemy.stats.stamina/2))*Enemy.gear.trinket.incr
+    Enemy.stats.power = (Enemy.stats.spirit+(Enemy.stats.strength/2))*Enemy.gear.trinket.incr
 
     Player.info = 
         "Level:     "+Player.stats.level+"\n"+
+        "Gold:      "+Player.gold+"\n"+
         "XP:        "+Player.stats.xp+"/"+Player.stats.level*10+"\n"+
         "HP:        "+Player.stats.hp+"/"+Player.stats.maxHp+"\n\n"+
         "Stamina:   "+Player.stats.stamina+"\n"+
         "Strength:  "+Player.stats.strength+"\n"+
         "Spirit:    "+Player.stats.spirit+"\n"+
-        "A/D/M /s:  "+Player.stats.ap+"/"+Player.stats.dp+"/"+Player.stats.mp+" /"+Player.state
+        "A/D/W /s:  "+Player.stats.attack+"/"+Player.stats.defense+"/"+Player.stats.will+" /"+Player.state
     Enemy.info = 
         "Turn "      +turn+"\n"+
         "Level:     "+Enemy.stats.level+"\n"+
+        "\n"+
         "HP:        "+Enemy.stats.hp+"/"+Enemy.stats.maxHp+"\n\n"+
         "Stamina:   "+Enemy.stats.stamina+"\n"+
         "Strength:  "+Enemy.stats.strength+"\n"+
         "Spirit:    "+Enemy.stats.spirit+"\n"+
-        "AP/DP/MP:  "+Enemy.stats.ap+"/"+Enemy.stats.dp+"/"+Enemy.stats.mp+" /"+Enemy.state
+        "A/D/W /s:  "+Enemy.stats.attack+"/"+Enemy.stats.defense+"/"+Enemy.stats.will+" /"+Enemy.state
 }
 
 function printToScreen() {
@@ -403,15 +458,15 @@ function printToScreen() {
     document.getElementById("player-info").innerText = Player.info
     document.getElementById("enemy-info").innerText = Enemy.info
 
-    document.getElementById("shop-item0").innerText = shopItems[0].name
-    document.getElementById("shop-item1").innerText = shopItems[1].name
-    document.getElementById("shop-item2").innerText = shopItems[2].name
+    document.getElementById("shop-item0").innerText = shopItems[0].name + " (" + shopItems[0].cost + ")"
+    document.getElementById("shop-item1").innerText = shopItems[1].name + " (" + shopItems[1].cost + ")"
+    document.getElementById("shop-item2").innerText = shopItems[2].name + " (" + shopItems[2].cost + ")"
 
     if (Player.items.length >= 1) {
         document.getElementById("item-name0").innerText = Player.items[0].name
     } else {document.getElementById("item-name0").innerText = "Empty"}
     if (Player.items.length >= 2) {
-        document.getElementById("item-name1").innerText = Player.items[1].nam
+        document.getElementById("item-name1").innerText = Player.items[1].name
     } else {document.getElementById("item-name1").innerText = "Empty"}
     if (Player.items.length >= 3) {
         document.getElementById("item-name2").innerText = Player.items[2].name

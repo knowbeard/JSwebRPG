@@ -9,67 +9,68 @@
 }
 
 .battleButton {
-    background-color: lightcoral;
+    background-color: rgba(189, 0, 0, 0.733);
     border: none;
     color: white;
-    padding: 5px 12px;
+    padding: 5px 1px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    font-size: 10px;
+    display: inline;
+    font-size: 6px;
 }
 
 .levelUpButton {
-    background-color:greenyellow;
+    background-color:rgba(90, 150, 0, 0.651);
     border: none;
     color: white;
     padding: 5px 12px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    font-size: 10px;
+    display: block;
+    font-size: 8px;
 }
 
 .shopButton {
-    background-color:yellow;
+    background-color:rgba(255, 153, 0, 0.897);
     border: none;
     color: white;
     padding: 5px 12px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    font-size: 10px;
+    display: inline;
+    font-size: 8px;
 }
 
 .itemButton {
-    background-color:skyblue;
+    background-color:rgb(0, 112, 156);
     border: none;
     color: white;
     padding: 5px 12px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    font-size: 10px;
+    display: inline;
+    font-size: 8px;
 }
 body {
-    background-color: lightgray
+    background-color: lightgray;
+    font-size: 4vw
 }
 h1 {
     color: darkblue;
     text-align: centre;
     font-family: exo2thin;
-    font-size: 10
+    font-size: 7vw
 }
 
 h2 {
-    font-size: 6
+    font-size: 6vw
 }
 
 h3 {
-    font-size: 5
+    font-size: 5vw
 }
 
 p {
     text-align: centre;
-    font-size: 5
+    font-size: 4vw
 }
